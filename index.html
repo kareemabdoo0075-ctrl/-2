@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Games - منصة الألعاب الكبرى</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">🎮 Mega Games</div>
+        <input type="text" id="searchInput" placeholder="ابحث بين الألعاب...">
+    </header>
+
+    <main class="container">
+        <section class="category-section">
+            <h2 id="sectionTitle">🔥 مكتبة الألعاب</h2>
+            <div class="games-grid" id="gamesContainer">
+                <!-- الألعاب تظهر هنا تلقائياً -->
+            </div>
+        </section>
+    </main>
+
+    <script src="games.js"></script>
+    <script>
+        const container = document.getElementById('gamesContainer');
+        const searchInput = document.getElementById('searchInput');
+
+        function renderGames(gamesList) {
+            container.innerHTML = '';
+            if (gamesList.length === 0) {
+                container.innerHTML = '<p class="no-results">لم نجد ألعاباً تطابق بحثك 🔍</p>';
+                return;
+            }
+            gamesList.forEach(game => {
+                const card = `
+                    <a href="play.html?url=${encodeURIComponent(game.url)}&title=${encodeURIComponent(game.title)}" class="game-card">
+                        <img src="${game.img}" alt="${game.title}" loading="lazy">
+                        <h3>${game.title}</h3>
+                    </a>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        renderGames(games);
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const filtered = games.filter(game => game.title.toLowerCase().includes(query));
+            renderGames(filtered);
+        });
+    </script>
+</body>
+</html>
 
